@@ -1,11 +1,18 @@
-# AWS Instance with Vagrant
+# Create a VM Instance with Vagrant
 
-This document will describe the process to create an AWS Instance using the Vagrant tool
+This document will describe the process to create a VM Instance using the Vagrant tool
+
+## Supported Providers
+
+- Amazon Web Services
+- Google Cloud Platform
 
 ## Requirements
 
+### Amazon Web Services
+
 1. AWS Account
-2. AWS Role with the minimal set of permissions to use Vagrant ([Packer minimal permissions](https://www.packer.io/docs/builders/amazon.html#iam-task-or-instance-role))
+2. AWS Role with the minimal set of permissions to use Packer ([Packer minimal permissions](https://www.packer.io/docs/builders/amazon.html#iam-task-or-instance-role))
     - Copy this JSON file and create a new AWS Role
   ```json
   {
@@ -57,47 +64,74 @@ This document will describe the process to create an AWS Instance using the Vagr
 ```
 3. AWS User with programmatic access. Assign the AWS Role created above
 4. AWS Subnet with the **auto-assign public IPv4 address** setting enabled
-5. Vagrant binary
+
+### Google Cloud Platform
+
+1. GCP Account
+2. Follow the steps to create a service account with the required permissions to run packer (https://www.packer.io/docs/builders/googlecompute.html#running-without-a-compute-engine-service-account)
+
+### General
+
+1. Vagrant binary
     - [Download Vagrant](https://www.vagrantup.com/downloads.html)
-6. Install [Vagrant AWS plugin](https://github.com/mitchellh/vagrant-aws)
-```bash
-vagrant plugin install vagrant-aws
-```
-7. AWS Vagrant Github repository
-``` bash
-git clone https://github.com/EduardoVega/aws-vagrant.git
-```
+2. Install Provider Plugin
+    - [Vagrant AWS plugin](https://github.com/mitchellh/vagrant-aws)
+    - [Vagrant Google plugin](https://github.com/mitchellh/vagrant-google)
+    ```bash
+    vagrant plugin install vagrant-aws
+    vagrant plugin install vagrant-google
+    ```
+3. Clone Vagrant Github repository
+    ``` bash
+    git clone https://github.com/EduardoVega/centos-7-nginx-vagrant.git
+    ```
 
 ## Execution
-1. Export Variables
-```bash
-export INSTANCE_NAME=''
-export AMI_ID=''
-export SECURITY_GROUP=''
-export SUBNET_ID=''
-export ACCESS_KEY='' 
-export SECRET_KEY=''
-export PRIVATE_KEY=''
-export PRIVATE_KEY_NAME=''
-```
-2. Create AWS Instance using Vagrant
-```bash
-# Navigate to the aws-vagrant github repo
-cd aws-vagrant
+1. Add and Export Variables
+    - Amazon Web Services
+      ```bash
+      bash aws-env-vars.sh
+      ```
+    - Google Cloud Platform
+      ```bash
+      bash gcp-env-vars.sh
+      ```
+2. Create Instance using Vagrant
 
-# Run vagrant
-vagrant up
+    Vagrant does not support parallel builds, so you can only create one instance at the time; if you want to create another one using a different provider, you must destroy any existing vm
 
-```
-3. Destroy AWS Instance using Vagrant
-```bash
-# Navigate to the aws-vagrant github repo
-cd aws-vagrant
+    - Create
+    ```bash
+    # Navigate to the centos-7-nginx-vagrant github repo
+    cd centos-7-nginx-vagrant
 
-# Run vagrant
-vagrant destroy
-```
-4. For more information, check vagrant aws plugin repo
-    - [Vagrant AWS plugin](https://github.com/mitchellh/vagrant-aws)
+    # Run vagrant for AWS
+    vagrant up --provider aws
+
+    # Run vagrant for GCP
+    vagrant up --provider google
+    ```
+    
+    - SSH
+    ```bash
+    # Navigate to the centos-7-nginx-vagrant github repo
+    cd centos-7-nginx-vagrant
+
+    # SSH vagrant instance
+    vagrant ssh
+    ```
+
+    - Destroy
+    ```bash
+    # Navigate to the centos-7-nginx-vagrant github repo
+    cd centos-7-nginx-vagrant
+
+    # Destroy vagrant instance
+    vagrant destroy
+    ```
+
+    - For more information, check vagrant plugins repo
+      - [Vagrant AWS plugin](https://github.com/mitchellh/vagrant-aws)
+      - [Vagrant Google plugin](https://github.com/mitchellh/vagrant-google)
 
 

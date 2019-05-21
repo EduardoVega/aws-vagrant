@@ -3,6 +3,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.synced_folder ".", "/vagrant", disabled: true
   
+    # AWS
     config.vm.provider :aws do |aws, override|
       aws.access_key_id = ENV['ACCESS_KEY']
       aws.secret_access_key = ENV['SECRET_KEY']
@@ -21,4 +22,18 @@ Vagrant.configure("2") do |config|
       override.ssh.private_key_path = ENV['PRIVATE_KEY']
 
     end
+
+    # GCP
+    config.vm.provider :google do |google, override|
+
+      override.vm.box = "google/gce"
+      google.google_project_id = ENV['GCP_PROJECT_ID']
+      google.google_json_key_location = ENV['GCP_SERVICE_ACCOUNT']
+      #google.image_family = ENV['GCP_IMAGE']
+      google.image = ENV['GCP_IMAGE']
+      override.ssh.username = ENV['SSH_USER']
+      override.ssh.private_key_path = ENV['SSH_PRIVATE_KEY']
+    
+    end
+
 end
