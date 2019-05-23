@@ -1,13 +1,29 @@
 # Create a VM Instance with Vagrant
 
-This document will describe the process to create a VM Instance using the Vagrant tool
+This repository contains a Vagrant template to create a VM instance using Vagrant CLI
 
 ## Supported Providers
 
 - Amazon Web Services
 - Google Cloud Platform
 
-## Requirements
+## Prerequisites
+
+### General
+
+1. Vagrant binary
+    - [Download Vagrant](https://www.vagrantup.com/downloads.html)
+2. Install Provider Plugin
+    - [Vagrant AWS plugin](https://github.com/mitchellh/vagrant-aws)
+    - [Vagrant Google plugin](https://github.com/mitchellh/vagrant-google)
+    ```bash
+    vagrant plugin install vagrant-aws
+    vagrant plugin install vagrant-google
+    ```
+3. Clone Vagrant Github repository
+    ``` bash
+    git clone https://github.com/EduardoVega/centos-7-nginx-vagrant.git
+    ```
 
 ### Amazon Web Services
 
@@ -70,24 +86,8 @@ This document will describe the process to create a VM Instance using the Vagran
 1. GCP Account
 2. Follow the steps to create a service account with the required permissions to run packer (https://www.packer.io/docs/builders/googlecompute.html#running-without-a-compute-engine-service-account)
 
-### General
-
-1. Vagrant binary
-    - [Download Vagrant](https://www.vagrantup.com/downloads.html)
-2. Install Provider Plugin
-    - [Vagrant AWS plugin](https://github.com/mitchellh/vagrant-aws)
-    - [Vagrant Google plugin](https://github.com/mitchellh/vagrant-google)
-    ```bash
-    vagrant plugin install vagrant-aws
-    vagrant plugin install vagrant-google
-    ```
-3. Clone Vagrant Github repository
-    ``` bash
-    git clone https://github.com/EduardoVega/centos-7-nginx-vagrant.git
-    ```
-
 ## Execution
-1. Add and Export Variables
+1. Set and export Environment Variables
     - Amazon Web Services
       ```bash
       bash aws-env-vars.sh
